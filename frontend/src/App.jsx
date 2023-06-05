@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Papa from "papaparse";
 import {
   ChakraProvider,
   Box,
@@ -12,29 +11,35 @@ import {
 
 const App = () => {
   const [userInput, setUserInput] = useState("");
-  const [displayText, setDisplayText] = useState("That is correct!");
-
-  const questions = [
-    "What is sepsis?",
-    "Why are you gay?",
-    "What is JavaScript?",
-    "What is a CPU?",
-    "What is AI?",
-    // Add as many questions as you'd like...
-  ];
+  const [displayText, setDisplayText] = useState("");
 
   const [currentQuestion, setCurrentQuestion] = useState("");
 
   // Function to get a random question from the array
-  const getRandomQuestion = () => {
+  const getQuestion = () => {
+    const questions = [
+      "What is sepsis?",
+      "Why are you gay?",
+      "What is JavaScript?",
+      "What is a CPU?",
+      "What is AI?",
+      // Add as many questions as you'd like...
+    ];
     const randomIndex = Math.floor(Math.random() * questions.length);
     return questions[randomIndex];
   };
 
   // Set an initial random question when the component mounts
   useEffect(() => {
-    setCurrentQuestion(getRandomQuestion());
+    setCurrentQuestion(getQuestion());
   }, []);
+
+  // Check the user's answer
+  const checkAnswer = () => {
+    // You can add logic here to check if the user's answer is correct
+    setDisplayText(userInput);
+    setUserInput("");
+  };
 
   return (
     <ChakraProvider resetCSS>
@@ -76,8 +81,7 @@ const App = () => {
           onChange={(e) => setUserInput(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              setDisplayText(userInput);
-              setUserInput("");
+              checkAnswer();
             }
           }}
           maxWidth={600}
@@ -91,9 +95,8 @@ const App = () => {
           colorScheme="facebook"
           variant="solid"
           onClick={() => {
-            setDisplayText(userInput);
-            setUserInput("");
-            setCurrentQuestion(getRandomQuestion());
+            checkAnswer();
+            setCurrentQuestion(getQuestion());
           }}
         >
           Next
