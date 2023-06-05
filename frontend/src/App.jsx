@@ -41,7 +41,7 @@ const App = () => {
       <Box ml={60} mr={60} mb={5}>
         <Flex>
           <Text fontSize="3xl" fontWeight="bold" color="#000000" mt={10}>
-            BrainQuiz
+            MasterMind
           </Text>
           <Image
             height={8}
