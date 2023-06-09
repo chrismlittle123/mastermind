@@ -12,12 +12,11 @@ import {
 const App = () => {
   const [userInput, setUserInput] = useState("");
   const [displayText, setDisplayText] = useState("");
-
   const [currentQuestion, setCurrentQuestion] = useState("");
 
   // Function to get a random question from the array
-  const getQuestion = () => {
-    const questions = [
+  const getQuestion = (): string => {
+    const questions: string[] = [
       "What is sepsis?",
       "Why are you gay?",
       "What is JavaScript?",
@@ -25,7 +24,7 @@ const App = () => {
       "What is AI?",
       // Add as many questions as you'd like...
     ];
-    const randomIndex = Math.floor(Math.random() * questions.length);
+    const randomIndex: number = Math.floor(Math.random() * questions.length);
     return questions[randomIndex];
   };
 
@@ -35,7 +34,7 @@ const App = () => {
   }, []);
 
   // Check the user's answer
-  const checkAnswer = () => {
+  const checkAnswer = (): void => {
     // You can add logic here to check if the user's answer is correct
     setDisplayText(userInput);
     setUserInput("");
