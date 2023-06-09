@@ -9,35 +9,53 @@ import {
   Button,
 } from "@chakra-ui/react";
 
+async function callAPI(endpoint: string, payload: any): Promise<any> {
+  const requestOptions: RequestInit = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  };
+
+  try {
+    const response = await fetch(endpoint, requestOptions);
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
 const App = () => {
   const [userInput, setUserInput] = useState("");
   const [displayText, setDisplayText] = useState("");
   const [currentQuestion, setCurrentQuestion] = useState("");
 
   // Function to get a random question from the array
-  const getQuestion = (): string => {
-    const questions: string[] = [
-      "What is sepsis?",
-      "Why are you gay?",
-      "What is JavaScript?",
-      "What is a CPU?",
-      "What is AI?",
-      // Add as many questions as you'd like...
-    ];
-    const randomIndex: number = Math.floor(Math.random() * questions.length);
-    return questions[randomIndex];
+  const getQuestion = async () => {
+    const response = await callAPI("http://localhost:8000/getQuestion", null);
+    return response.question;
   };
 
   // Set an initial random question when the component mounts
   useEffect(() => {
-    setCurrentQuestion(getQuestion());
+    (async () => {
+      const question = await getQuestion();
+      setCurrentQuestion(question);
+    })();
   }, []);
 
   // Check the user's answer
-  const checkAnswer = (): void => {
-    // You can add logic here to check if the user's answer is correct
-    setDisplayText(userInput);
-    setUserInput("");
+  const checkAnswer = async () => {
+    const payload = { question: currentQuestion, my_answer: userInput };
+    const response = await callAPI(
+      "http://localhost:8000/checkAnswer",
+      payload
+    );
+    setDisplayText(response.message);
   };
 
   return (
@@ -93,9 +111,10 @@ const App = () => {
           maxHeight={8}
           colorScheme="facebook"
           variant="solid"
-          onClick={() => {
-            checkAnswer();
-            setCurrentQuestion(getQuestion());
+          onClick={async () => {
+            await checkAnswer();
+            const question = await getQuestion();
+            setCurrentQuestion(question);
           }}
         >
           Next
@@ -108,10 +127,14 @@ const App = () => {
         rounded="md"
         bg="white"
         ml={60}
+        pt={2}
+        pb={2}
         mb={10}
         minWidth={100}
       >
-        <Text>{displayText}</Text>
+        <Text ml={5} mr={5}>
+          {displayText}
+        </Text>
       </Box>
     </ChakraProvider>
   );
