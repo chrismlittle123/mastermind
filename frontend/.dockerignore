@@ -1,0 +1,23 @@
+# Ignore all git related files
+.git
+.gitignore
+
+# Ignore node modules, as they will be re-installed during docker build
+node_modules
+
+# Ignore Dockerfile
+Dockerfile
+
+# Ignore README.md file
+README.md
+
+# Ignore any log files
+*.log
+
+# Ignore any build directories
+/dist
+/build
+
+# Ignore any local configuration files
+*.env.local
+*.env.development

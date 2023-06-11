@@ -20,7 +20,7 @@ const App: React.FC = () => {
   // Function to get a random question from the array
   const getQuestion = async (): Promise<string> => {
     const response: APIResponse = await callAPI(
-      "http://localhost:8000/getQuestion",
+      "https://shielded-dusk-83912.herokuapp.com/getQuestion",
       null
     );
     return response.question;
@@ -40,7 +40,7 @@ const App: React.FC = () => {
     const payload = { question: currentQuestion, my_answer: userInput };
     try {
       const response: APIResponse = await callAPI(
-        "http://localhost:8000/checkAnswer",
+        "https://shielded-dusk-83912.herokuapp.com/checkAnswer",
         payload
       );
       setDisplayText(response.message);
