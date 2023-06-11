@@ -8,7 +8,7 @@ WORKDIR .
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install -g npm@next-8
+RUN npm install -g npm@9.7.1
 RUN npm install
 
 # Copy the entire project to the working directory
