@@ -17,22 +17,23 @@ const App: React.FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Function to get a random question from the array
-  const getQuestion = async (): Promise<string> => {
+  // Function to get a random question from the backend
+  const getQuestion = async (): Promise<void> => {
     const response: APIResponse = await callAPI(
       "https://shielded-dusk-83912.herokuapp.com/getQuestion",
       null
     );
-    return response.question;
+    setCurrentQuestion(response.question);
   };
 
   // Set an initial random question when the component mounts
   useEffect(() => {
-    (async () => {
-      const question: string = await getQuestion();
-      setCurrentQuestion(question);
-    })();
+    getQuestion();
   }, []);
+
+  const clearDisplayText = (): void => {
+    setDisplayText("");
+  };
 
   // Check the user's answer
   const checkAnswer = async (): Promise<void> => {
@@ -63,6 +64,7 @@ const App: React.FC = () => {
         setUserInput={setUserInput}
         checkAnswer={checkAnswer}
         getNewQuestion={getQuestion}
+        clearDisplayText={clearDisplayText}
       />
       <DisplayBox displayText={displayText} />
     </ChakraProvider>

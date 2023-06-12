@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image
-FROM node:latest
+FROM node:18.16.0
 
 # Set the working directory in the container
 WORKDIR .
@@ -8,7 +8,6 @@ WORKDIR .
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install -g npm@9.7.1
 RUN npm install
 
 # Copy the entire project to the working directory
