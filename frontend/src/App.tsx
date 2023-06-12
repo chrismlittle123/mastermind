@@ -31,7 +31,8 @@ const App: React.FC = () => {
     getQuestion();
   }, []);
 
-  const clearDisplayText = (): void => {
+  const clearText = (): void => {
+    setUserInput("");
     setDisplayText("");
   };
 
@@ -64,7 +65,7 @@ const App: React.FC = () => {
         setUserInput={setUserInput}
         checkAnswer={checkAnswer}
         getNewQuestion={getQuestion}
-        clearDisplayText={clearDisplayText}
+        clearText={clearText}
       />
       <DisplayBox displayText={displayText} />
     </ChakraProvider>
