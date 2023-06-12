@@ -40,7 +40,6 @@ export const InputBox: React.FC<InputBoxProps> = ({
       colorScheme="facebook"
       variant="solid"
       onClick={async () => {
-        await checkAnswer();
         clearText();
         getNewQuestion();
       }}
