@@ -1,0 +1,10 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Ports": [
+    {
+      "ContainerPort": "4173"
+    }
+  ],
+  "Volumes": [],
+  "Logging": "/var/log/nginx"
+}

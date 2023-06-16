@@ -6,7 +6,8 @@ interface InputBoxProps {
   isLoading: boolean;
   setUserInput: (value: string) => void;
   checkAnswer: () => Promise<void>;
-  getNewQuestion: () => Promise<string>;
+  getNewQuestion: () => Promise<void>;
+  clearText: () => void;
 }
 
 export const InputBox: React.FC<InputBoxProps> = ({
@@ -15,6 +16,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
   setUserInput,
   checkAnswer,
   getNewQuestion,
+  clearText,
 }) => (
   <Box backgroundColor="whiteAlpha.200" mr={60} ml={60} mb={10} minWidth={100}>
     <Input
@@ -38,8 +40,8 @@ export const InputBox: React.FC<InputBoxProps> = ({
       colorScheme="facebook"
       variant="solid"
       onClick={async () => {
-        await checkAnswer();
-        await getNewQuestion();
+        clearText();
+        getNewQuestion();
       }}
     >
       Next
