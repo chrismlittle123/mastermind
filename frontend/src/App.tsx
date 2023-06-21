@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import callAPI from "./callAPI";
-import { ChakraProvider, Box } from "@chakra-ui/react";
+import { ChakraProvider, Box, Grid, GridItem } from "@chakra-ui/react";
 import { Header } from "./components/Header";
 import { QuestionBox } from "./components/QuestionBox";
 import { InputBox } from "./components/InputBox";
@@ -55,19 +55,36 @@ const App: React.FC = () => {
 
   return (
     <ChakraProvider resetCSS>
-      <Box ml={60} mr={60} mb={5}>
-        <Header />
+      <Box p={5}>
+        <Grid
+          gap={5}
+          templateRows={{ sm: "repeat(3, 1fr)", md: "repeat(2, 1fr)" }}
+          templateColumns={{ sm: "1fr", md: "repeat(3, 1fr)" }}
+        >
+          <GridItem colSpan={{ sm: 1, md: 4 }}>
+            <Header />
+          </GridItem>
+
+          <GridItem colSpan={{ sm: 1, md: 3 }}>
+            <QuestionBox currentQuestion={currentQuestion} />
+          </GridItem>
+
+          <GridItem colSpan={{ sm: 1, md: 3 }}>
+            <InputBox
+              userInput={userInput}
+              isLoading={isLoading}
+              setUserInput={setUserInput}
+              checkAnswer={checkAnswer}
+              getNewQuestion={getQuestion}
+              clearText={clearText}
+            />
+          </GridItem>
+
+          <GridItem colSpan={{ sm: 1, md: 3 }}>
+            <DisplayBox displayText={displayText} />
+          </GridItem>
+        </Grid>
       </Box>
-      <QuestionBox currentQuestion={currentQuestion} />
-      <InputBox
-        userInput={userInput}
-        isLoading={isLoading}
-        setUserInput={setUserInput}
-        checkAnswer={checkAnswer}
-        getNewQuestion={getQuestion}
-        clearText={clearText}
-      />
-      <DisplayBox displayText={displayText} />
     </ChakraProvider>
   );
 };

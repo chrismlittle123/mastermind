@@ -18,7 +18,7 @@ export const InputBox: React.FC<InputBoxProps> = ({
   getNewQuestion,
   clearText,
 }) => (
-  <Box backgroundColor="whiteAlpha.200" mr={60} ml={60} mb={10} minWidth={100}>
+  <Box backgroundColor="whiteAlpha.200">
     <Input
       value={userInput}
       onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -29,13 +29,10 @@ export const InputBox: React.FC<InputBoxProps> = ({
           checkAnswer();
         }
       }}
-      maxWidth={600}
-      minWidth={300}
       height={8}
     />
     <Button
-      ml={5}
-      mb={1}
+      mt={1}
       maxHeight={8}
       colorScheme="facebook"
       variant="solid"

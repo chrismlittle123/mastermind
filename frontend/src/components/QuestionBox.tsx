@@ -7,16 +7,7 @@ interface QuestionBoxProps {
 export const QuestionBox: React.FC<QuestionBoxProps> = ({
   currentQuestion,
 }) => (
-  <Box
-    backgroundColor="whiteAlpha.200"
-    mr={60}
-    boxShadow="2xl"
-    rounded="md"
-    bg="white"
-    ml={60}
-    mb={5}
-    minWidth={100}
-  >
+  <Box backgroundColor="whiteAlpha.200" boxShadow="2xl" rounded="md" bg="white">
     <Text>{currentQuestion}</Text>
   </Box>
 );
