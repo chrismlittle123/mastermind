@@ -5,7 +5,7 @@ interface DisplayBoxProps {
 }
 
 export const DisplayBox: React.FC<DisplayBoxProps> = ({ displayText }) => (
-  <Box backgroundColor="whiteAlpha.200" boxShadow="2xl" rounded="md" bg="white">
+  <Box>
     <Text>{displayText}</Text>
   </Box>
 );
