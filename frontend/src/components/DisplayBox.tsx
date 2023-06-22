@@ -1,17 +1,20 @@
 import { Box, Text } from "@chakra-ui/react";
 
 interface DisplayBoxProps {
-  displayText: string;
+  scorePercentage: number;
+  checkAnswerMessage: string;
   exampleAnswer?: string;
 }
 
 export const DisplayBox: React.FC<DisplayBoxProps> = ({
-  displayText,
+  scorePercentage,
+  checkAnswerMessage,
   exampleAnswer,
 }) => (
   <Box>
     <Text>
-      {displayText} <br></br> <br></br> {exampleAnswer}
+      Score: {scorePercentage} % - {checkAnswerMessage} <br></br> Example
+      Answer: {exampleAnswer}
     </Text>
   </Box>
 );

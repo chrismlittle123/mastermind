@@ -16,12 +16,17 @@ interface GetQuestionResponse {
 
 interface CheckAnswerResponse {
   is_correct: boolean;
+  score_percentage: number;
   message: string;
 }
 
 const App: React.FC = () => {
   const [userInput, setUserInput] = useState<string>("");
-  const [displayText, setDisplayText] = useState<string>("");
+  const [displayText, setDisplayText] = useState<CheckAnswerResponse>({
+    is_correct: false,
+    score_percentage: 0,
+    message: "",
+  });
   const [currentQuestion, setCurrentQuestion] = useState<GetQuestionResponse>({
     question_id: 0,
     question: "",
@@ -47,14 +52,18 @@ const App: React.FC = () => {
 
   const clearText = (): void => {
     setUserInput("");
-    setDisplayText("");
+    setDisplayText({
+      is_correct: false,
+      score_percentage: 0,
+      message: "",
+    });
   };
 
   // Check the user's answer
   const checkAnswer = async (): Promise<void> => {
     setIsLoading(true);
     const payload = {
-      question: currentQuestion.question,
+      question_id: currentQuestion.question_id,
       my_answer: userInput,
     };
     try {
@@ -62,7 +71,7 @@ const App: React.FC = () => {
         "http://127.0.0.1:8000/checkAnswer",
         payload
       );
-      setDisplayText(response.message);
+      setDisplayText(response);
     } catch (error: any) {
       console.error(error);
     } finally {
@@ -103,9 +112,10 @@ const App: React.FC = () => {
 
           <GridItem colSpan={{ sm: 1, md: 3 }}>
             <DisplayBox
-              displayText={displayText}
+              scorePercentage={displayText.score_percentage}
+              checkAnswerMessage={displayText.message}
               exampleAnswer={
-                displayText ? currentQuestion.example_answer : undefined
+                displayText.message ? currentQuestion.example_answer : undefined
               }
             />
           </GridItem>
