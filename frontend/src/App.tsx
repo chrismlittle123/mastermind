@@ -39,7 +39,7 @@ const App: React.FC = () => {
   // Function to get a random question from the backend
   const getQuestion = async (): Promise<void> => {
     const response: GetQuestionResponse = await callAPI(
-      "http://127.0.0.1:8000/getQuestion",
+      "http://mastermindapi-env.eba-jmbgah2n.eu-west-2.elasticbeanstalk.com/getQuestion",
       null
     );
     setCurrentQuestion(response);
@@ -68,7 +68,7 @@ const App: React.FC = () => {
     };
     try {
       const response: CheckAnswerResponse = await callAPI(
-        "http://127.0.0.1:8000/checkAnswer",
+        "http://mastermindapi-env.eba-jmbgah2n.eu-west-2.elasticbeanstalk.com/checkAnswer",
         payload
       );
       setDisplayText(response);
