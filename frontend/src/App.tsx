@@ -6,24 +6,43 @@ import { QuestionBox } from "./components/QuestionBox";
 import { InputBox } from "./components/InputBox";
 import { DisplayBox } from "./components/DisplayBox";
 
-interface APIResponse {
+interface GetQuestionResponse {
+  question_id: number;
   question: string;
+  example_answer: string;
+  topic: string;
+  points: number;
+}
+
+interface CheckAnswerResponse {
+  is_correct: boolean;
+  score_percentage: number;
   message: string;
 }
 
 const App: React.FC = () => {
   const [userInput, setUserInput] = useState<string>("");
-  const [displayText, setDisplayText] = useState<string>("");
-  const [currentQuestion, setCurrentQuestion] = useState<string>("");
+  const [displayText, setDisplayText] = useState<CheckAnswerResponse>({
+    is_correct: false,
+    score_percentage: 0,
+    message: "",
+  });
+  const [currentQuestion, setCurrentQuestion] = useState<GetQuestionResponse>({
+    question_id: 0,
+    question: "",
+    example_answer: "",
+    topic: "",
+    points: 0,
+  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Function to get a random question from the backend
   const getQuestion = async (): Promise<void> => {
-    const response: APIResponse = await callAPI(
-      "https://shielded-dusk-83912.herokuapp.com/getQuestion",
+    const response: GetQuestionResponse = await callAPI(
+      "http://mastermindapi-env.eba-jmbgah2n.eu-west-2.elasticbeanstalk.com/getQuestion",
       null
     );
-    setCurrentQuestion(response.question);
+    setCurrentQuestion(response);
   };
 
   // Set an initial random question when the component mounts
@@ -33,19 +52,26 @@ const App: React.FC = () => {
 
   const clearText = (): void => {
     setUserInput("");
-    setDisplayText("");
+    setDisplayText({
+      is_correct: false,
+      score_percentage: 0,
+      message: "",
+    });
   };
 
   // Check the user's answer
   const checkAnswer = async (): Promise<void> => {
     setIsLoading(true);
-    const payload = { question: currentQuestion, my_answer: userInput };
+    const payload = {
+      question_id: currentQuestion.question_id,
+      my_answer: userInput,
+    };
     try {
-      const response: APIResponse = await callAPI(
-        "https://shielded-dusk-83912.herokuapp.com/checkAnswer",
+      const response: CheckAnswerResponse = await callAPI(
+        "http://mastermindapi-env.eba-jmbgah2n.eu-west-2.elasticbeanstalk.com/checkAnswer",
         payload
       );
-      setDisplayText(response.message);
+      setDisplayText(response);
     } catch (error: any) {
       console.error(error);
     } finally {
@@ -66,7 +92,11 @@ const App: React.FC = () => {
           </GridItem>
 
           <GridItem colSpan={{ sm: 1, md: 3 }}>
-            <QuestionBox currentQuestion={currentQuestion} />
+            <QuestionBox
+              points={currentQuestion.points}
+              topic={currentQuestion.topic}
+              currentQuestion={currentQuestion.question}
+            />
           </GridItem>
 
           <GridItem colSpan={{ sm: 1, md: 3 }}>
@@ -81,7 +111,13 @@ const App: React.FC = () => {
           </GridItem>
 
           <GridItem colSpan={{ sm: 1, md: 3 }}>
-            <DisplayBox displayText={displayText} />
+            <DisplayBox
+              scorePercentage={displayText.score_percentage}
+              checkAnswerMessage={displayText.message}
+              exampleAnswer={
+                displayText.message ? currentQuestion.example_answer : undefined
+              }
+            />
           </GridItem>
         </Grid>
       </Box>
